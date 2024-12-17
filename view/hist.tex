@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+
+\newcommand{\plotHistogram}[1]{
+            \pgfplotstableread{../dat/#1_mean.dat}\loadedtable
+            \pgfplotstablegetelem{0}{[index]0}\of\loadedtable
+            \edef\meanvalue{\pgfplotsretval}
+            \pgfplotstableread{../dat/#1_count.dat}\loadedtable
+            \pgfplotstablegetelem{0}{[index]0}\of\loadedtable
+            \edef\countvalue{\pgfplotsretval}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    xlabel=Número de elementos,
+                    ylabel=Contagem,
+                    bar width=0.01cm,
+                    legend pos=outer north east,
+                    width=0.9\textwidth,
+                    height=0.4\textwidth,
+                ]
+                \addplot[ybar, fill=black!50, draw=black!50] table {../dat/#1.dat};
+                \draw[gray, dashed] (axis cs:\meanvalue, 0) -- (axis cs:\meanvalue, \countvalue);
+                \addlegendentry{Média};
+                \end{axis}
+            \end{tikzpicture}
+            }
+\begin{document}
+\begin{figure}
+    \centering
+    \pgfplotstableread{../dat/mulher_mean.dat}\loadedtable
+            \pgfplotstablegetelem{0}{[index]0}\of\loadedtable
+            \edef\meanvalue{\pgfplotsretval}
+            \pgfplotstableread{../dat/mulher_count.dat}\loadedtable
+            \pgfplotstablegetelem{0}{[index]0}\of\loadedtable
+            \edef\countvalue{\pgfplotsretval}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    xlabel=Número de elementos,
+                    ylabel=Contagem,
+                    bar width=0.01cm,
+                    legend pos=outer north east,
+                    width=0.9\textwidth,
+                    height=0.4\textwidth,
+                ]
+                \addplot[ybar, fill=black!50, draw=black!50] table {../dat/mulher.dat};
+                %\draw[gray, dashed] (axis cs:\meanvalue, 0) -- (axis cs:\meanvalue, \countvalue);
+                \addlegendentry{Média};
+                \end{axis}
+            \end{tikzpicture}
+    \caption{Histograma de contagem de elementos}
+\end{figure}
+\end{document}
